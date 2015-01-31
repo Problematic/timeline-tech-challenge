@@ -134,6 +134,20 @@ define([
                     });
                 });
             });
+            describe('#onEventChange', function () {
+                it('should be dispatched with previous and current event indexes as args', function () {
+                    var signalHandler = jasmine.createSpy('signalHandler');
+                    timeline.onEventChange.add(signalHandler);
+                    timeline.duration = 10;
+                    timeline.add({}, 5);
+                    timeline.add({}, 10);
+                    timeline.play();
+                    timeline.update(5);
+                    expect(signalHandler).toHaveBeenCalledWith(-1, 0);
+                    timeline.update(10);
+                    expect(signalHandler).toHaveBeenCalledWith(0, 1);
+                });
+            });
             describe('#onPause', function () {
                 it('should be dispatched after timeline#pause is called', function () {
                     runs(function () {
@@ -154,7 +168,7 @@ define([
                     waitsFor(waitLatch, 'timeline#onFinish to be dispatched', 250);
                 });
 
-                it('shold be dispatched automatically on update where scrubber reaches duration', function () {
+                it('should be dispatched automatically on update where scrubber reaches duration', function () {
                     runs(function () {
                         timeline.onFinish.add(signalHandler);
                         timeline.duration = 5;

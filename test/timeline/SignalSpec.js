@@ -116,5 +116,21 @@ define([
                 expect(ctx2.dispatched).toBe(true);
             });
         });
+
+        it('should be able to dispatch arguments to the handler', function () {
+            runs(function () {
+                signal.add(function (val) {
+                    asyncFlag = val;
+                    callCount++;
+                });
+                signal.dispatch(true);
+            });
+
+            waitsFor(waitLatch, 'signal to be dispatched with args', 250);
+
+            runs(function () {
+                expect(callCount).toBe(1);
+            });
+        });
     });
 });

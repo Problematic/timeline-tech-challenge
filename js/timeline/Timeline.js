@@ -9,8 +9,11 @@ define(['./Signal'], function (Signal) {
         }
 
         timeline.events = {};
+        timeline._currentIndex = -1;
+
         timeline.onPlay = new Signal();
         timeline.onUpdate = new Signal();
+        timeline.onEventChange = new Signal();
         timeline.onPause = new Signal();
         timeline.onFinish = new Signal();
         timeline.onRestart = new Signal();
@@ -78,6 +81,12 @@ define(['./Signal'], function (Signal) {
                 this.scrubber += dt;
                 this.scrubber = Math.min(this.scrubber, this.duration);
 
+                var idx = this.indexAt(this.scrubber);
+                if (this._currentIndex !== idx) {
+                    var idxCache = this._currentIndex;
+                    this._currentIndex = idx;
+                    this.onEventChange.dispatch(idxCache, idx);
+                }
                 this.onUpdate.dispatch();
 
                 if (this.scrubber === this.duration) {

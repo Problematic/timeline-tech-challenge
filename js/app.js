@@ -41,27 +41,23 @@ require([
             timeline.add(data.events[i], data.events[i].age * 2);
         }
 
-        var index = -1;
-        var $timelineEvent;
         timeline.onUpdate.add(function () {
             $scrubber.attr('value', timeline.scrubber);
+        });
 
-            var timelineIndex = timeline.indexAt(timeline.scrubber);
-            if (timelineIndex !== index) {
-                index = timelineIndex;
+        var $timelineEvent;
+        timeline.onEventChange.add(function (prev, curr) {
+            var $new = $(util.buildEventEl(data, timeline[curr]));
+            $events.append($new);
+            $new.on('webkitAnimationEnd', function ($e) {
+                $(this).remove();
+            });
 
-                var $new = $(util.buildEventEl(data, timeline[index]));
-                $events.append($new);
-                $new.on('webkitAnimationEnd', function ($e) {
-                    $(this).remove();
-                });
-
-                if ($timelineEvent) {
-                    $timelineEvent.addClass('animate-out');
-                }
-
-                $timelineEvent = $new;
+            if ($timelineEvent) {
+                $timelineEvent.addClass('animate-out');
             }
+
+            $timelineEvent = $new;
         });
 
         timeline.onFinish.add(function () {
