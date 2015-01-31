@@ -8,7 +8,8 @@ require([
 
     $(function () {
         $container = $('.container');
-        $scrubber = $('.scrubber');
+        $events = $container.find('.current-events');
+        $scrubber = $container.find('.scrubber');
 
         var stateToText = {};
         stateToText[Timeline.State.PLAYING] = 'Pause';
@@ -20,10 +21,10 @@ require([
             var prev = timeline.state;
 
             if (prev === Timeline.State.PLAYING) {
-                $container.find('.timeline-event').addClass('timeline-paused');
+                $events.find('.timeline-event').addClass('timeline-paused');
                 timeline.pause();
             } else if (prev === Timeline.State.PAUSED) {
-                $container.find('.timeline-event').removeClass('timeline-paused');
+                $events.find('.timeline-event').removeClass('timeline-paused');
                 timeline.play();
             } else if (prev === Timeline.State.FINISHED) {
                 timeline.restart();
@@ -50,7 +51,7 @@ require([
                 index = timelineIndex;
 
                 var $new = $(util.buildEventEl(data, timeline[index]));
-                $container.append($new);
+                $events.append($new);
                 $new.on('webkitAnimationEnd', function ($e) {
                     $(this).remove();
                 });
