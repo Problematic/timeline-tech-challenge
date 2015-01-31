@@ -1,0 +1,52 @@
+* {
+    font-family: Helvetica;
+}
+
+.container {
+    font-size: 24px;
+    overflow: hidden;
+    height: 50px;
+}
+
+.timeline-event {
+    line-height: 24px;
+}
+
+@-webkit-keyframes slide-out {
+    from {
+        transform: translate(0, 0);
+    }
+
+    to {
+        transform: translate(0, -48px);
+    }
+}
+
+.animate-out {
+    -webkit-animation: slide-out 0.75s linear;
+}
+
+.timeline-paused {
+    -webkit-animation-play-state: paused;
+}
+
+.scrubber {
+    border-radius: 2px;
+    height: 5px;
+    min-width: 250px;
+}
+
+.scrubber[value]::-webkit-progress-bar {
+    background-color: #eee;
+    border-radius: 2px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+}
+
+.scrubber[value]::-webkit-progress-value {
+    border-radius: 2px;
+    background-color: #222;
+}
+
+.controls {
+    margin-top: 10px;
+}
